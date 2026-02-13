@@ -56,16 +56,6 @@ const skillCategories = [
       { name: "WordPress", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg" },
     ],
   },
-  {
-    title: "Soft Skills",
-    skills: [
-      { name: "Communication", logo: "" },
-      { name: "Problem-solving", logo: "" },
-      { name: "Teamwork", logo: "" },
-      { name: "Adaptability", logo: "" },
-      { name: "Active Listening", logo: "" },
-    ],
-  },
 ];
 
 const certifications = [
@@ -178,37 +168,43 @@ const About = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-24"
         >
-          <h2 className="font-display text-4xl md:text-6xl mb-10">
-            STACK<span className="text-primary">.</span>
-          </h2>
+          {/* Marquee heading like footer */}
+          <div className="overflow-hidden brutalist-border-thick border-b-0 py-4 bg-foreground">
+            <div className="flex animate-marquee whitespace-nowrap">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span key={i} className="font-display text-4xl md:text-6xl mx-8 text-background/80">
+                  STACK — TOOLS — TECH —
+                </span>
+              ))}
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 brutalist-border-thick">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
             {skillCategories.map((category, i) => (
               <motion.div
                 key={category.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                className="brutalist-border p-6 md:p-8"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
+                className="brutalist-border-thick p-6 md:p-8 hover:shadow-[8px_8px_0_hsl(var(--primary))] transition-all group"
               >
                 {/* Category Header */}
-                <div className="bg-primary text-primary-foreground px-4 py-2 mb-6 inline-flex items-center gap-2">
+                <div className="bg-primary text-primary-foreground px-4 py-2 mb-6 inline-flex items-center gap-2 group-hover:bg-foreground group-hover:text-background transition-colors">
                   <h3 className="font-display text-xl md:text-2xl">{category.title}</h3>
                 </div>
 
-                {/* Skills List */}
-                <ul className="space-y-3">
+                {/* Skills as horizontal cards */}
+                <div className="flex flex-wrap gap-3">
                   {category.skills.map((skill) => (
-                    <li key={skill.name} className="flex items-center gap-3">
-                      {skill.logo ? (
-                        <img src={skill.logo} alt={skill.name} className="w-5 h-5 flex-shrink-0" />
-                      ) : (
-                        <span className="w-2 h-2 bg-primary flex-shrink-0" />
-                      )}
-                      <span className="font-mono-custom text-sm">{skill.name}</span>
-                    </li>
+                    <div
+                      key={skill.name}
+                      className="brutalist-border px-4 py-3 flex items-center gap-3 bg-background hover:bg-primary/10 transition-colors"
+                    >
+                      <img src={skill.logo} alt={skill.name} className="w-6 h-6 flex-shrink-0" />
+                      <span className="font-mono-custom text-xs uppercase tracking-wider">{skill.name}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </motion.div>
             ))}
           </div>
