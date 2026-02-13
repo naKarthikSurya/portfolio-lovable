@@ -25,16 +25,6 @@ const Contact = () => {
 
   return (
     <section className="py-16 md:py-24">
-      {/* Marquee Banner */}
-      <div className="overflow-hidden brutalist-border-thick border-l-0 border-r-0 py-4 bg-foreground mb-16">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="font-display text-4xl md:text-6xl mx-8 text-background/80">
-              LET'S TALK — SAY HELLO — REACH OUT —
-            </span>
-          ))}
-        </div>
-      </div>
 
       <div className="container mx-auto px-4 md:px-8">
         {/* Split Layout: Big CTA left, form right */}
