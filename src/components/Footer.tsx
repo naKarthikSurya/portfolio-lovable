@@ -22,13 +22,13 @@ const Footer = () => {
           </div>
           <div className="flex gap-6">
             <Link to="/" className="font-mono-custom text-xs uppercase tracking-wider text-background/60 hover:text-primary transition-colors">Portfolio</Link>
-            <a href="/resume.pdf" className="font-mono-custom text-xs uppercase tracking-wider text-background/60 hover:text-primary transition-colors">Resume</a>
+            <Link to="/resume" className="font-mono-custom text-xs uppercase tracking-wider text-background/60 hover:text-primary transition-colors">Resume</Link>
             <Link to="/contact" className="font-mono-custom text-xs uppercase tracking-wider text-background/60 hover:text-primary transition-colors">Contact</Link>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-background/20">
+        {/* <div className="mt-8 pt-6 border-t border-background/20">
           <p className="font-mono-custom text-xs text-background/40 text-center">Based in Chennai / Bangalore, India</p>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

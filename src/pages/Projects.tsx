@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Github } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const projects = [
   {
@@ -42,8 +43,14 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-8">
+    <>
+      <Seo
+        title="Projects"
+        description="Explore major projects by Karthik Surya, including legal AI assistants, RAG systems, and real-time ML applications."
+        keywords="Karthik Surya projects, Legal AI, RAG portfolio, Gemini API projects, FastAPI AI projects"
+      />
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-8">
         {/* Heading */}
         <div className="relative mb-16">
           <span className="font-display text-[5rem] md:text-[10rem] text-foreground/5 absolute -top-6 md:-top-12 left-0 select-none leading-none">
@@ -107,8 +114,9 @@ const Projects = () => {
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 
