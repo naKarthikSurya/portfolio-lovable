@@ -1,73 +1,131 @@
-# Welcome to your Lovable project
+# Karthik Surya Portfolio
 
-## Project info
+Personal portfolio site for **Karthik Surya** built with React + Vite + TypeScript, with custom SEO metadata and Brevo-powered contact mailer.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Live domain target: `https://nakarthiksurya.com`
 
-## How can I edit this code?
+## Tech Stack
 
-There are several ways of editing your application.
+- React 18 + TypeScript
+- Vite 5
+- React Router
+- Tailwind CSS + shadcn/ui
+- Framer Motion
+- React Helmet Async (SEO meta management)
+- Brevo Transactional Email API (contact form emails)
+- Vitest + Testing Library
 
-**Use Lovable**
+## Pages / Routes
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- `/` Home
+- `/about` About
+- `/experience` Experience
+- `/projects` Projects
+- `/contact` Contact
+- `/resume` Resume Viewer
+- `*` 404
 
-Changes made via Lovable will be committed automatically to this repo.
+Routes are defined in `src/App.tsx`.
 
-**Use your preferred IDE**
+## SEO Setup
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+SEO is configured with:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- `src/config/seo.ts` for global site metadata
+- `src/components/Seo.tsx` for per-page tags (title, description, canonical, OG, Twitter, JSON-LD)
+- `public/robots.txt`
+- `public/sitemap.xml`
+- `index.html` fallback meta tags
 
-Follow these steps:
+Each main page injects route-specific metadata using `<Seo />`.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Contact Form / Mailer
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Contact form is in `src/pages/Contact.tsx`.
 
-# Step 3: Install the necessary dependencies.
-npm i
+It supports two sending modes:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. React-only direct Brevo mode (no separate backend runtime)
+2. Serverless API fallback mode (`api/contact.ts`)
+
+### Email behavior
+
+On each successful submission, two mails are sent:
+
+- Owner notification email (to your inbox)
+- User acknowledgment email (to submitter inbox)
+
+Both use professional HTML templates.
+
+## Environment Variables
+
+Use `.env.example` as reference.
+
+### React-only mode (client-side)
+
+These are read by Vite and exposed to browser bundle:
+
+- `VITE_BREVO_API_KEY`
+- `VITE_CONTACT_TO_EMAIL`
+- `VITE_CONTACT_FROM_EMAIL`
+- `VITE_CONTACT_ENDPOINT` (optional, fallback endpoint path)
+
+### Server-only mode (API route)
+
+- `BREVO_API_KEY`
+- `CONTACT_TO_EMAIL`
+- `CONTACT_FROM_EMAIL`
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run dev server:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Build for production:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+Preview production build:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run preview
+```
 
-## What technologies are used for this project?
+Run tests:
 
-This project is built with:
+```bash
+npm run test
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Run lint:
 
-## How can I deploy this project?
+```bash
+npm run lint
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Deployment Notes
 
-## Can I connect a custom domain to my Lovable project?
+- If you use React-only mode, emails work anywhere but API key is public in client bundle.
+- For safer production, prefer server-side mode using `api/contact.ts` on a serverless platform.
+- Ensure `CONTACT_FROM_EMAIL` / `VITE_CONTACT_FROM_EMAIL` is a verified sender in Brevo.
 
-Yes, you can!
+## Important Files
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `src/App.tsx` route map
+- `src/config/seo.ts` global SEO config
+- `src/components/Seo.tsx` SEO tag injector
+- `src/pages/Contact.tsx` contact form + direct Brevo mail logic
+- `api/contact.ts` serverless mail endpoint
+- `public/robots.txt` crawler directives
+- `public/sitemap.xml` sitemap
