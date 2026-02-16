@@ -179,34 +179,38 @@ const About = () => {
             STACK<span className="text-primary">.</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {skillCategories.map((category, i) => (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-                className="brutalist-border-thick aspect-square p-6 md:p-8 bg-foreground text-background hover:shadow-[8px_8px_0_hsl(var(--primary))] transition-all group flex flex-col"
-              >
-                {/* Category Header */}
-                <div className="bg-primary text-primary-foreground px-4 py-2 mb-auto inline-flex items-center gap-2 self-start">
-                  <h3 className="font-display text-xl md:text-2xl">{category.title}</h3>
-                </div>
+          <div className="brutalist-border-thick">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              {skillCategories.map((category, i) => (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
+                  className={`p-6 md:p-8 ${
+                    i < 3 ? "border-b-[3px] border-foreground" : ""
+                  } ${
+                    (i % 3 !== 2) ? "md:border-r-[3px] md:border-foreground" : ""
+                  }`}
+                >
+                  <div className="inline-block bg-primary text-primary-foreground px-4 py-1.5 mb-6">
+                    <h3 className="font-display text-sm md:text-base uppercase tracking-wider">{category.title}</h3>
+                  </div>
 
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {category.skills.map((skill) => (
-                    <div
-                      key={skill.name}
-                      className="flex items-center gap-2 px-3 py-2 border border-background/20 hover:border-primary hover:bg-primary/10 transition-colors"
-                    >
-                      <img src={skill.logo} alt={skill.name} className="w-5 h-5 flex-shrink-0" />
-                      <span className="font-mono-custom text-[10px] uppercase tracking-wider text-background/80">{skill.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                  <div className="space-y-3">
+                    {category.skills.map((skill) => (
+                      <div
+                        key={skill.name}
+                        className="flex items-center gap-3"
+                      >
+                        <img src={skill.logo} alt={skill.name} className="w-5 h-5 flex-shrink-0" />
+                        <span className="font-body text-sm text-foreground/80">{skill.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
