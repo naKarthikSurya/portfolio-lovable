@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MapPin, Calendar } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const experiences = [
   {
@@ -61,8 +62,14 @@ const experiences = [
 
 const Experience = () => {
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-8">
+    <>
+      <Seo
+        title="Experience"
+        description="Work experience of Karthik Surya across Software Engineering, AI internships, and production deployments in intelligent systems."
+        keywords="Karthik Surya experience, Software Engineer C1X, AI internships, RAG and multi-agent development"
+      />
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-8">
         {/* Heading */}
         <div className="relative mb-16">
           <span className="font-display text-[5rem] md:text-[10rem] text-foreground/5 absolute -top-6 md:-top-12 left-0 select-none leading-none">
@@ -136,8 +143,9 @@ const Experience = () => {
             ))}
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -2,25 +2,230 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Linkedin, Github, Download, Send, ArrowUpRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Seo from "@/components/Seo";
+
+type ContactApiResponse = { success?: boolean; message?: string };
+type BrevoPayload = {
+  sender: { email: string; name: string };
+  to: Array<{ email: string; name: string }>;
+  replyTo?: { email: string; name: string };
+  subject: string;
+  htmlContent: string;
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const escapeHtml = (unsafe: string) =>
+  unsafe
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+const formatSubmittedAt = () =>
+  new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date());
+
+const buildOwnerTemplate = (safeName: string, safeEmail: string, safeMessage: string, submittedAt: string) => `
+  <div style="background:#f5f5f5;padding:24px;font-family:Arial,sans-serif;color:#111111;">
+    <table role="presentation" width="100%" style="max-width:680px;margin:0 auto;background:#ffffff;border:1px solid #e5e5e5;border-collapse:collapse;">
+      <tr>
+        <td style="padding:24px 24px 8px 24px;">
+          <h1 style="margin:0;font-size:22px;line-height:1.3;">New Portfolio Inquiry</h1>
+          <p style="margin:8px 0 0 0;color:#555;font-size:14px;">A new message was submitted on nakarthiksurya.com.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:8px 24px 24px 24px;">
+          <table role="presentation" width="100%" style="border-collapse:collapse;border:1px solid #ededed;">
+            <tr><td style="padding:10px 12px;border-bottom:1px solid #ededed;background:#fafafa;width:160px;"><strong>Name</strong></td><td style="padding:10px 12px;border-bottom:1px solid #ededed;">${safeName}</td></tr>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid #ededed;background:#fafafa;"><strong>Email</strong></td><td style="padding:10px 12px;border-bottom:1px solid #ededed;">${safeEmail}</td></tr>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid #ededed;background:#fafafa;"><strong>Submitted</strong></td><td style="padding:10px 12px;border-bottom:1px solid #ededed;">${escapeHtml(submittedAt)}</td></tr>
+            <tr><td style="padding:10px 12px;background:#fafafa;vertical-align:top;"><strong>Message</strong></td><td style="padding:10px 12px;line-height:1.55;">${safeMessage}</td></tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 24px 24px;color:#666;font-size:12px;">
+          Source: https://nakarthiksurya.com/contact
+        </td>
+      </tr>
+    </table>
+  </div>
+`;
+
+const buildUserTemplate = (safeName: string, safeMessage: string, submittedAt: string) => `
+  <div style="background:#f5f5f5;padding:24px;font-family:Arial,sans-serif;color:#111111;">
+    <table role="presentation" width="100%" style="max-width:680px;margin:0 auto;background:#ffffff;border:1px solid #e5e5e5;border-collapse:collapse;">
+      <tr>
+        <td style="padding:24px;">
+          <h1 style="margin:0;font-size:22px;line-height:1.3;">Thanks for reaching out, ${safeName}</h1>
+          <p style="margin:10px 0 0 0;color:#444;line-height:1.6;">
+            Your message has been received. I appreciate your interest and will get back to you as soon as possible.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 24px 24px;">
+          <table role="presentation" width="100%" style="border-collapse:collapse;border:1px solid #ededed;">
+            <tr><td style="padding:10px 12px;border-bottom:1px solid #ededed;background:#fafafa;width:160px;"><strong>Submitted</strong></td><td style="padding:10px 12px;border-bottom:1px solid #ededed;">${escapeHtml(submittedAt)}</td></tr>
+            <tr><td style="padding:10px 12px;background:#fafafa;vertical-align:top;"><strong>Your message</strong></td><td style="padding:10px 12px;line-height:1.55;">${safeMessage}</td></tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 24px 24px;color:#555;font-size:14px;line-height:1.6;">
+          Regards,<br />
+          <strong>Karthik Surya</strong><br />
+          Software Engineer & AI Developer
+        </td>
+      </tr>
+    </table>
+  </div>
+`;
 
 const Contact = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", website: "" });
   const [loading, setLoading] = useState(false);
+  const contactEndpoint = import.meta.env.VITE_CONTACT_ENDPOINT || "/api/contact";
+  const brevoApiKey = import.meta.env.VITE_BREVO_API_KEY;
+  const brevoToEmail = import.meta.env.VITE_CONTACT_TO_EMAIL;
+  const brevoFromEmail = import.meta.env.VITE_CONTACT_FROM_EMAIL;
+
+  const parseJsonSafely = async (response: Response): Promise<ContactApiResponse | null> => {
+    const raw = await response.text();
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as ContactApiResponse;
+    } catch {
+      return null;
+    }
+  };
+
+  const sendBrevoEmail = async (payload: BrevoPayload) => {
+    if (!brevoApiKey) {
+      throw new Error("Missing Brevo API key.");
+    }
+
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "api-key": brevoApiKey,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Brevo request failed.");
+    }
+  };
+
+  const sendViaBrevoDirect = async (name: string, email: string, message: string) => {
+    if (!brevoApiKey || !brevoToEmail || !brevoFromEmail) {
+      throw new Error("Missing Brevo client configuration.");
+    }
+
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
+    const submittedAt = formatSubmittedAt();
+
+    await sendBrevoEmail({
+      sender: {
+        email: brevoFromEmail,
+        name: "Karthik Surya Portfolio",
+      },
+      to: [{ email: brevoToEmail, name: "Karthik Surya" }],
+      replyTo: {
+        email,
+        name,
+      },
+      subject: `New Portfolio Inquiry from ${name}`,
+      htmlContent: buildOwnerTemplate(safeName, safeEmail, safeMessage, submittedAt),
+    });
+
+    await sendBrevoEmail({
+      sender: {
+        email: brevoFromEmail,
+        name: "Karthik Surya",
+      },
+      to: [{ email, name }],
+      replyTo: {
+        email: brevoToEmail,
+        name: "Karthik Surya",
+      },
+      subject: "Thanks for contacting Karthik Surya",
+      htmlContent: buildUserTemplate(safeName, safeMessage, submittedAt),
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+
+    // Honeypot spam trap
+    if (formData.website.trim()) {
+      toast({ title: "Message Sent!", description: "Thank you for reaching out. I'll get back to you soon." });
+      setFormData({ name: "", email: "", message: "", website: "" });
+      return;
+    }
+
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
       toast({ title: "Error", description: "Please fill in all fields.", variant: "destructive" });
       return;
     }
+    if (!EMAIL_PATTERN.test(trimmedEmail)) {
+      toast({ title: "Error", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
+    }
+
     setLoading(true);
-    // TODO: Wire to Mailgun edge function
-    setTimeout(() => {
+    try {
+      if (brevoApiKey && brevoToEmail && brevoFromEmail) {
+        await sendViaBrevoDirect(trimmedName, trimmedEmail, trimmedMessage);
+      } else {
+        const response = await fetch(contactEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const contentType = response.headers.get("content-type") ?? "";
+        const isJson = contentType.includes("application/json");
+        const data = isJson ? await parseJsonSafely(response) : null;
+
+        if (!isJson) {
+          throw new Error(
+            "Contact API is unavailable. Set VITE_BREVO_API_KEY for React-only mode, or run a serverless endpoint.",
+          );
+        }
+
+        if (!response.ok || !data?.success) {
+          throw new Error(data?.message || "Failed to send message.");
+        }
+      }
+
       toast({ title: "Message Sent!", description: "Thank you for reaching out. I'll get back to you soon." });
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", website: "" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to send message.";
+      toast({ title: "Error", description: message, variant: "destructive" });
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (

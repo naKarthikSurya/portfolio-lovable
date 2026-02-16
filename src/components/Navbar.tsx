@@ -30,21 +30,19 @@ const Navbar = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`font-mono-custom text-xs uppercase tracking-wider px-3 py-2 transition-colors hover:text-primary ${
+                className={`font-mono-custom text-sm uppercase tracking-wider px-3 py-2 transition-colors hover:text-primary ${
                   location.pathname === link.to ? "text-primary font-bold" : "text-foreground"
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 px-4 py-2 brutalist-border bg-primary text-primary-foreground font-mono-custom text-xs uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
+            <Link
+              to="/resume"
+              className="ml-2 px-4 py-2 brutalist-border bg-primary text-primary-foreground font-mono-custom text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors"
             >
               RESUME.PDF
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -67,21 +65,20 @@ const Navbar = () => {
                 key={link.to}
                 to={link.to}
                 onClick={() => setIsOpen(false)}
-                className={`font-mono-custom text-sm uppercase tracking-wider px-4 py-3 brutalist-border transition-colors hover:bg-primary hover:text-primary-foreground ${
+                className={`font-mono-custom text-base uppercase tracking-wider px-4 py-3 brutalist-border transition-colors hover:bg-primary hover:text-primary-foreground ${
                   location.pathname === link.to ? "bg-primary text-primary-foreground" : ""
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-3 brutalist-border bg-foreground text-background font-mono-custom text-sm uppercase tracking-wider text-center"
+            <Link
+              to="/resume"
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-3 brutalist-border bg-foreground text-background font-mono-custom text-base uppercase tracking-wider text-center"
             >
               RESUME.PDF
-            </a>
+            </Link>
           </div>
         </div>
       )}

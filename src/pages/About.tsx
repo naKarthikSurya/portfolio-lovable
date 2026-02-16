@@ -1,16 +1,17 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Award, BookOpen } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const skills = [
   "Transformers", "Generative AI", "LLMs", "CrewAI", "Gemini API",
   "RAG Systems", "FastAPI", "NestJS", "Docker", "Python", "TypeScript"
 ];
 
-const stats = [
-  { value: "8.30", label: "Cumulative GPA", rotate: "-2deg" },
-  { value: "08+", label: "Months Experience", rotate: "1.5deg" },
-  { value: "04", label: "Major Projects", rotate: "-1deg" },
-];
+// const stats = [
+//   { value: "8.30", label: "Cumulative GPA", rotate: "-2deg" },
+//   { value: "08+", label: "Months Experience", rotate: "1.5deg" },
+//   { value: "04", label: "Major Projects", rotate: "-1deg" },
+// ];
 
 const skillCategories = [
   {
@@ -67,8 +68,14 @@ const certifications = [
 
 const About = () => {
   return (
-    <section className="py-16 md:py-24">
-      <div className="container mx-auto px-4 md:px-8">
+    <>
+      <Seo
+        title="About"
+        description="Learn more about Karthik Surya, a Software Engineer focused on Generative AI, NLP, and production-ready intelligent systems."
+        keywords="About Karthik Surya, AI Engineer background, Generative AI developer, NLP engineer"
+      />
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-8">
         {/* Heading */}
         <div className="relative mb-16">
           <span className="font-display text-[6rem] md:text-[12rem] text-foreground/5 absolute -top-8 md:-top-16 left-0 select-none leading-none">
@@ -142,7 +149,7 @@ const About = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -159,7 +166,7 @@ const About = () => {
               <div className="mt-3 h-1 w-16 bg-primary" />
             </motion.div>
           ))}
-        </div>
+        </div> */}
 
         {/* ─── STACK ─── */}
         <motion.div
@@ -234,26 +241,34 @@ const About = () => {
           {/* School Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="brutalist-border-thick p-6 md:p-8" style={{ transform: "rotate(1deg)" }}>
-              <div className="inline-block brutalist-border px-3 py-1 mb-4">
-                <span className="font-mono-custom text-xs uppercase tracking-widest">2020 – 2021</span>
-              </div>
-              <h3 className="font-display text-2xl md:text-3xl">HIGHER SECONDARY (12TH)</h3>
-              <p className="font-mono-custom text-sm text-muted-foreground mt-1">Green Park International School — Namakkal</p>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="font-display text-3xl text-primary">77.4%</span>
-                <span className="font-mono-custom text-xs text-muted-foreground uppercase">Percentage</span>
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="inline-block brutalist-border px-3 py-1 mb-4">
+                    <span className="font-mono-custom text-xs uppercase tracking-widest">2020 – 2021</span>
+                  </div>
+                  <h3 className="font-display text-2xl md:text-3xl">HIGHER SECONDARY (12TH)</h3>
+                  <p className="font-mono-custom text-sm text-muted-foreground mt-1">Green Park International School — Namakkal</p>
+                </div>
+                <div className="brutalist-border-thick p-4 md:p-6 bg-primary/5" style={{ transform: "rotate(-2deg)" }}>
+                  <span className="font-display text-2xl md:text-4xl text-primary">77.4%</span>
+                  <p className="font-mono-custom text-xs uppercase tracking-widest text-muted-foreground">Percentage</p>
+                </div>
               </div>
             </div>
 
             <div className="brutalist-border-thick p-6 md:p-8" style={{ transform: "rotate(-1.5deg)" }}>
-              <div className="inline-block brutalist-border px-3 py-1 mb-4">
-                <span className="font-mono-custom text-xs uppercase tracking-widest">2018 – 2019</span>
-              </div>
-              <h3 className="font-display text-2xl md:text-3xl">SECONDARY SCHOOL (10TH)</h3>
-              <p className="font-mono-custom text-sm text-muted-foreground mt-1">Green Park International School — Namakkal</p>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="font-display text-3xl text-primary">77.4%</span>
-                <span className="font-mono-custom text-xs text-muted-foreground uppercase">Percentage</span>
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <div className="inline-block brutalist-border px-3 py-1 mb-4">
+                    <span className="font-mono-custom text-xs uppercase tracking-widest">2018 – 2019</span>
+                  </div>
+                  <h3 className="font-display text-2xl md:text-3xl">SECONDARY SCHOOL (10TH)</h3>
+                  <p className="font-mono-custom text-sm text-muted-foreground mt-1">Green Park International School — Namakkal</p>
+                </div>
+                <div className="brutalist-border-thick p-4 md:p-6 bg-primary/5" style={{ transform: "rotate(-2deg)" }}>
+                  <span className="font-display text-2xl md:text-4xl text-primary">77.4%</span>
+                  <p className="font-mono-custom text-xs uppercase tracking-widest text-muted-foreground">Percentage</p>
+                </div>
               </div>
             </div>
           </div>
@@ -313,8 +328,9 @@ const About = () => {
             ))}
           </div>
         </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 };
 
