@@ -6,7 +6,7 @@ const Resume = () => {
   const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const resumePath = "/resume.pdf";
+  const resumePath = "/suryaresume.pdf";
 
   useEffect(() => {
     let active = true;
