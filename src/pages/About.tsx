@@ -233,28 +233,6 @@ const About = () => {
         </motion.div>
 
         {/* ─── EDUCATION ─── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-24"
-        >
-          <h2 className="font-display text-4xl md:text-6xl mb-10">
-            EDUCATION<span className="text-primary">.</span>
-          </h2>
-
-          {/* Main Education Card */}
-          <div className="brutalist-border-thick p-8 md:p-12 mb-8">
-            <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-              <div>
-                <div className="inline-block brutalist-border px-3 py-1 mb-4">
-                  <span className="font-mono-custom text-xs uppercase tracking-widest text-primary">2021 – 2025</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* ─── EDUCATION ─── */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
