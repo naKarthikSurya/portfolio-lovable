@@ -31,47 +31,50 @@ const skills = [
 //   { value: "04", label: "Major Projects", rotate: "-1deg" },
 // ];
 
-type MarqueeSkill = {
-  name: string;
-  logo?: string;
-  icon?: LucideIcon;
-};
-
-const marqueeSkillRows: MarqueeSkill[][] = [
-  [
-    { name: "Transformers", icon: Workflow },
-    { name: "Generative AI", icon: Brain },
-    { name: "LLMs", icon: Bot },
-    { name: "RAG Systems", icon: Search },
-    { name: "CrewAI", icon: GitBranch },
-    { name: "Gemini API", icon: Server },
-    { name: "BERT Models", icon: BookOpen },
-  ],
-  [
-    { name: "Python", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-    { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-    { name: "FastAPI", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" },
-    { name: "NestJS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
-    { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
-    { name: "Git", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-  ],
-  [
-    { name: "Pandas", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
-    { name: "Matplotlib", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" },
-    { name: "Power BI", icon: BarChart3 },
-    { name: "MySQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
-    { name: "MongoDB", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
-    { name: "Linux", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
-  ],
-  [
-    { name: "API Design", icon: Code2 },
-    { name: "Test Automation", icon: Bug },
-    { name: "Version Control", icon: GitBranch },
-    { name: "Problem-solving", icon: Lightbulb },
-    { name: "Communication", icon: MessageSquare },
-    { name: "Teamwork", icon: Users },
-    { name: "Accessibility", icon: Accessibility },
-  ],
+const skillCategories = [
+  {
+    title: "AI & ML",
+    skills: [
+      { name: "Generative AI", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" },
+      { name: "LLMs", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" },
+      { name: "BERT Models", logo: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg" },
+      { name: "RAG Systems", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
+    ],
+  },
+  {
+    title: "Programming",
+    skills: [
+      { name: "Python", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+    ],
+  },
+  {
+    title: "Frameworks",
+    skills: [
+      { name: "NestJS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
+      { name: "FastAPI", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" },
+      { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+      { name: "Git", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+      { name: "Bootstrap Studio", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" },
+    ],
+  },
+  {
+    title: "Data & Analytics",
+    skills: [
+      { name: "Pandas", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
+      { name: "Matplotlib", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" },
+      { name: "Power BI", logo: "https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg" },
+    ],
+  },
+  {
+    title: "Platforms",
+    skills: [
+      { name: "Windows", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows11/windows11-original.svg" },
+      { name: "Linux (Ubuntu)", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-original.svg" },
+      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" },
+      { name: "WordPress", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg" },
+    ],
+  },
 ];
 
 const certifications = [
@@ -183,63 +186,69 @@ const About = () => {
           ))}
         </div> */}
 
-          {/* ─── SKILLS ─── */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-24"
-          >
-            <div className="relative overflow-hidden brutalist-border-thick px-5 py-10 md:px-10 md:py-14">
-              <div className="relative">
-                <h2 className="font-display text-center text-5xl md:text-6xl text-foreground mb-10">
-                  MY SKILLS<span className="text-primary">.</span>
-                </h2>
+        {/* ─── STACK ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-24"
+        >
+          <h2 className="font-display text-4xl md:text-6xl mb-10">
+            STACK<span className="text-primary">.</span>
+          </h2>
 
-                <div className="space-y-4 md:space-y-5">
-                  {marqueeSkillRows.map((row, rowIndex) => (
-                    <div key={`skills-row-${rowIndex}`} className="relative overflow-hidden">
-                      <motion.div
-                        className="flex w-max items-center gap-3 md:gap-4"
-                        animate={{ x: rowIndex % 2 === 0 ? ["0%", "-50%"] : ["-50%", "0%"] }}
-                        transition={{ duration: 22 + rowIndex * 3, repeat: Infinity, ease: "linear" }}
+          <div className="brutalist-border-thick">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              {skillCategories.map((category, i) => (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
+                  className={`p-6 md:p-8 ${
+                    i < 3 ? "border-b-[3px] border-foreground" : ""
+                  } ${
+                    (i % 3 !== 2) ? "md:border-r-[3px] md:border-foreground" : ""
+                  }`}
+                >
+                  <div className="inline-block bg-primary text-primary-foreground px-4 py-1.5 mb-6">
+                    <h3 className="font-display text-sm md:text-base uppercase tracking-wider">{category.title}</h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    {category.skills.map((skill) => (
+                      <div
+                        key={skill.name}
+                        className="flex items-center gap-3"
                       >
-                        {[...row, ...row].map((skill, skillIndex) => {
-                          const Icon = skill.icon;
-                          return (
-                            <span
-                              key={`skill-${rowIndex}-${skill.name}-${skillIndex}`}
-                              className="group flex shrink-0 items-center gap-2.5 brutalist-border bg-background px-3 py-2 md:px-4 transition-colors hover:bg-primary hover:text-primary-foreground"
-                            >
-                              {skill.logo ? (
-                                <img
-                                  src={skill.logo}
-                                  alt={`${skill.name} icon`}
-                                  className="h-4 w-4 object-contain opacity-90 group-hover:brightness-0 group-hover:invert transition-all"
-                                  loading="lazy"
-                                />
-                              ) : Icon ? (
-                                <Icon className="h-4 w-4 text-primary group-hover:text-primary-foreground transition-colors" aria-hidden />
-                              ) : (
-                                <span className="h-2 w-2 rounded-full bg-primary group-hover:bg-primary-foreground transition-colors" aria-hidden />
-                              )}
-                              <span className="font-mono-custom text-sm md:text-base normal-case">
-                                {skill.name}
-                              </span>
-                            </span>
-                          );
-                        })}
-                      </motion.div>
-                      <div
-                        className="pointer-events-none absolute inset-y-0 left-0 w-14 md:w-28"
-                        style={{ background: "linear-gradient(to right, hsl(var(--muted)) 0%, transparent 100%)" }}
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-y-0 right-0 w-14 md:w-28"
-                        style={{ background: "linear-gradient(to left, hsl(var(--muted)) 0%, transparent 100%)" }}
-                      />
-                    </div>
-                  ))}
+                        <img src={skill.logo} alt={skill.name} className="w-5 h-5 flex-shrink-0" />
+                        <span className="font-body text-sm text-foreground/80">{skill.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ─── EDUCATION ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-24"
+        >
+          <h2 className="font-display text-4xl md:text-6xl mb-10">
+            EDUCATION<span className="text-primary">.</span>
+          </h2>
+
+          {/* Main Education Card */}
+          <div className="brutalist-border-thick p-8 md:p-12 mb-8">
+            <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+              <div>
+                <div className="inline-block brutalist-border px-3 py-1 mb-4">
+                  <span className="font-mono-custom text-xs uppercase tracking-widest text-primary">2021 – 2025</span>
                 </div>
               </div>
             </div>
